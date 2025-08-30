@@ -274,6 +274,16 @@ define Device/glinet_gl-mt300n-v2
 endef
 TARGET_DEVICES += glinet_gl-mt300n-v2
 
+define Device/raul_IoT-gateway-v1
+  IMAGE_SIZE := 16064k
+  DEVICE_VENDOR := RAUL
+  DEVICE_MODEL := RAUL-IoT
+  DEVICE_VARIANT := V1
+  DEVICE_PACKAGES := kmod-usb2 ser2net
+  SUPPORTED_DEVICES += IoT-gateway-v1
+endef
+TARGET_DEVICES += raul_IoT-gateway-v1
+
 define Device/glinet_microuter-n300
   IMAGE_SIZE := 16064k
   DEVICE_VENDOR := GL.iNet
