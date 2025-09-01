@@ -14,10 +14,11 @@
                 led-running = &led_power;
                 led-upgrade = &led_power;
                 label-mac-device = &ethernet;
+                
         };
 
         chosen {
-                bootargs = "console=ttyS1,115200";
+                bootargs = "console=ttyS0,57600";
         };
 
         leds {
@@ -142,7 +143,7 @@
         };
 };
 
-&uart0 { // Zigbee 串口
+&uartlite { // Zigbee 串口
         status = "okay";
 };
 
