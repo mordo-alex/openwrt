@@ -12,40 +12,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 步骤1：检出您仓库中的代码 (包含了您的 dts 和 Makefile 修改)
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      # 步骤1：检出您的代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 步骤2：安装编译所需的依赖软件
-    - name: Install build dependencies
-    run: |
-      sudo apt-get update
-      sudo apt-get install -y build-essential clang flex bison g++ gawk gcc-multilib g++-multilib \
-      gettext git libncurses5-dev libssl-dev rsync unzip zlib1g-dev file wget
+      # 步骤2：安装编译所需的依赖
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev rsync unzip zlib1g-dev file wget
 
-    # 步骤3：更新并安装 OpenWrt 的 feeds 软件包
-    - name: Update and install feeds
-      run: |
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
+      # 步骤3：更新并安装 OpenWrt 的 feeds 软件包
+      - name: Update and install feeds
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
-    # 步骤4：加载您的自定义配置文件
-    - name: Load custom configuration
-      run: |
-        mv IoT-gateway.config .config
-        make defconfig
+      # 步骤4：加载您的自定义配置文件
+      - name: Load custom configuration
+        run: |
+          mv IoT-gateway.config .config
+          make defconfig
 
-    # 步骤5：下载所有软件包的源码
-    - name: Download package sources
-      run: make download -j$(nproc)
+      # 步骤5：下载所有软件包的源码
+      - name: Download package sources
+        run: make download -j$(nproc)
 
-    # 步骤6：开始编译固件 (多线程，并输出详细日志)
-    - name: Build firmware
-      run: make -j$(nproc) V=s
+      # 步骤6：开始编译固件
+      - name: Build firmware
+        run: make -j$(nproc) V=s
 
-    # 步骤7：上传编译好的固件作为“产物” (Artifact)，方便您下载
-    - name: Upload firmware artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: openwrt-firmware-my-iot-gateway
-        path: bin/targets/ramips/mt76x8/*sysupgrade.bin
+      # 步骤7：上传编译好的固件作为“产物” (Artifact)
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openwrt-firmware-my-iot-gateway
+          path: bin/targets/ramips/mt76x8/*sysupgrade.bin
