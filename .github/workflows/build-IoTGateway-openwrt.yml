@@ -48,3 +48,28 @@ jobs:
         with:
           name: openwrt-firmware-my-iot-gateway
           path: bin/targets/ramips/mt76x8/*sysupgrade.bin
+      # (前面是 "Build firmware" 和 "Upload firmware artifact" 的步骤)
+      # ...
+    
+      # 步骤8：准备发布所需的环境变量
+      - name: Prepare Release Environment
+        id: release_env
+        run: |
+          echo "FILE_DATE=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
+          echo "DEVICE_NAME=My-IoT-Gateway" >> $GITHUB_ENV
+
+      # 步骤9：创建 Release 并上传固件
+      - name: Upload Firmware to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # 使用唯一的日期和ID创建 Release 标签 (tag)
+          tag_name: ${{ github.run_id }}-${{ env.DEVICE_NAME }}-${{ env.FILE_DATE }}
+          # Release 的标题
+          name: Auto Release - ${{ env.DEVICE_NAME }} - ${{ env.FILE_DATE }}
+          # Release 的描述内容
+          body: |
+            This is an automated release of the OpenWrt firmware.
+            - Device: ${{ env.DEVICE_NAME }}
+            - Date: ${{ env.FILE_DATE }}
+          # 要上传的文件 (使用通配符匹配)
+          files: bin/targets/ramips/mt76x8/*sysupgrade.bin
