@@ -137,7 +137,7 @@
                         // === 关键修正：恢复为单一 firmware 分区 ===
                         firmware: partition@50000 {
                                 label = "firmware";
-                                reg = <0x50000 0xfb0000>;
+                                reg = <0x50000 0xf50000>;
                                 compatible = "openwrt,uimage"; // 使用这个兼容性字符串
                         };
                 };
