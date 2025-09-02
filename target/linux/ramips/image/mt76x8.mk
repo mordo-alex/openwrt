@@ -276,11 +276,17 @@ TARGET_DEVICES += glinet_gl-mt300n-v2
 
 define Device/raul_IoT-gateway-v1
   IMAGE_SIZE := 15680k
+  KERNEL_SIZE := 2048k
   DEVICE_VENDOR := RAUL
   DEVICE_MODEL := RAUL-IoT
   DEVICE_VARIANT := V1
   DEVICE_PACKAGES := kmod-usb2 ser2net
   SUPPORTED_DEVICES += IoT-gateway-v1
+  # 强制 image 打包流程：pad kernel 到 KERNEL_SIZE，再 append rootfs
+  IMAGE/sysupgrade.bin := \
+    append-kernel | pad-to $$(KERNEL_SIZE) | \
+    append-rootfs | pad-rootfs | \
+    append-metadata
 endef
 TARGET_DEVICES += raul_IoT-gateway-v1
 
