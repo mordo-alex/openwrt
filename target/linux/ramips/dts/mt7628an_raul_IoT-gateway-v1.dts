@@ -134,11 +134,21 @@
                                 };
                         };
 
-                        partition@50000 {
-                                compatible = "denx,uimage";
-                                label = "firmware";
-                                reg = <0x50000 0xfb0000>;
+                        // ...
+                        kernel: partition@50000 {
+                            label = "kernel";
+                            reg = <0x50000 0x200000>; // 起始地址 320KB, 分配 2MB 空间给内核
+                            read-only;
                         };
+                
+                        rootfs: partition@250000 {
+                            label = "rootfs";
+                            // 起始地址 = 0x50000 + 0x200000 = 0x250000
+                            // 剩余空间 = 0x1000000 - 0x250000 = 0xdb0000
+                            reg = <0x250000 0xdb0000>; 
+                            compatible = "openwrt,rootfs";
+                        };
+                        // ...
                 };
         };
 };
