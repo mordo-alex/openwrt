@@ -275,7 +275,7 @@ endef
 TARGET_DEVICES += glinet_gl-mt300n-v2
 
 define Device/raul_IoT-gateway-v1
-  IMAGE_SIZE := 16064k
+  IMAGE_SIZE := 15680k
   DEVICE_VENDOR := RAUL
   DEVICE_MODEL := RAUL-IoT
   DEVICE_VARIANT := V1
